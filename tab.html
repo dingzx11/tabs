@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>无标题文档</title>
+<style>
+*{ margin:0; padding:0}
+a{ text-decoration:none;}
+.wrap{ width:602px;margin:50px auto;border:1px solid red;}
+ul{ list-style:none}
+.tab{ position:relative}
+.tab .tabList{width:100px; position:absolute; left:0; top:0 }
+.tab .tabList .ac{ background:#ccc; color:#fff;}
+.tab .tabList li a{ display:block; width:100px; height:40px; text-align:center; line-height:40px;}
+.tab .tabCont{ border:1px solid #ccc; height:300px;width:500px;margin-left:100px;overflow:hidden;}
+.tab .tabCont img{display:block;height:300px;width:500px;}
+.tab .tabCont .opcc{animation: opc 3.5s;}
+    @keyframes opc{
+        0%{opacity: 0}
+        100%{opacity: 1}
+
+    }
+
+</style>
+<script>
+	window.onload=function(){		
+		tab('tab1');		
+		function tab(id){	
+		var tab=document.getElementById(id);
+		var tabList=tab.getElementsByTagName('ul')[0];
+		var aLi=tabList.getElementsByTagName('li');
+		var tabCont=tab.getElementsByClassName('tabCont')[0];
+		var aTabItem=tabCont.getElementsByTagName('div');
+		var timer;
+		clearInterval(timer);
+		auto_run();//跑起来
+		var n=0;
+
+		for(var i=0; i<aLi.length; i++){
+			aLi[i].index=i;
+			aLi[i].onclick=function(){
+				clearInterval(timer);
+				for(var j=0; j<aLi.length; j++){
+					aTabItem[j].style.display="none";
+					aLi[j].className="";
+					aTabItem[j].className=''
+				};
+				aTabItem[this.index].style.display="block";
+				this.className="ac";
+				n=this.index;
+                aTabItem[n].className='opcc'
+			};
+		};
+		
+		//-----------------------------------------
+		//自动播放
+	var o=0;
+	function show_item(n){
+		if(o!=0){
+			for(var i=0; i<aTabItem.length; i++){
+				aLi[i].className="";
+				aTabItem[i].style.display="none";
+				aTabItem[i].className=''
+			}
+			aTabItem[n].style.display="block";
+			aLi[n].className="ac";
+			aTabItem[n].className='opcc';
+		}
+		o++;
+	};
+	function auto_run(){
+			timer=setInterval(function(){
+				show_item(n);
+				n++;
+				if(n==aTabItem.length){
+					n=0;
+					o=1;
+				}
+			},3500);
+		};
+
+		tab.onmouseover=function(){
+			clearInterval(timer)
+		};
+		
+		tab.onmouseout=function(){
+			auto_run();
+		}
+	
+	};
+};
+	
+	
+	
+</script>
+</head>
+<body>
+<div class="wrap">    
+    <div id="tab1" class="tab">
+    	<ul class="tabList">
+        	<li class="ac"><a href="javascript:;">tab1</a></li>
+            <li><a href="javascript:;">tab2</a></li>
+            <li><a href="javascript:;">tab3</a></li>
+        </ul>
+        <div class="tabCont">
+        	<div><img src="images/a.jpg"></div>
+            <div><img src="images/b.jpg"></div>
+            <div><img src="images/c.jpg"></div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
